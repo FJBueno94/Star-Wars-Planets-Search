@@ -4,16 +4,29 @@ import projectContext from './ProjectContext';
 
 function ProjectProvider({ children }) {
   const [data, setData] = useState([]);
+  const [filterData, setFilterData] = useState([]);
+  const [searchInput, setSearchInput] = useState('');
 
   async function getData() {
     const getPromise = await fetch('https://swapi-trybe.herokuapp.com/api/planets/');
     const response = await getPromise.json();
     setData(response.results);
+    setFilterData(response.results);
     return data;
   }
 
   return (
-    <projectContext.Provider value={ { data, setData, getData } }>
+    <projectContext.Provider
+      value={ {
+        filterData,
+        setFilterData,
+        getData,
+        data,
+        setData,
+        searchInput,
+        setSearchInput,
+      } }
+    >
       {children}
     </projectContext.Provider>
   );

@@ -1,15 +1,29 @@
 import React, { useEffect, useContext } from 'react';
 import ProjectContext from '../contextAPI/ProjectContext';
+import Search from './Search';
 
 function Table() {
-  const { data, getData } = useContext(ProjectContext);
+  const {
+    filterData,
+    setFilterData,
+    getData,
+    searchInput,
+    data,
+  } = useContext(ProjectContext);
 
   useEffect(() => {
     getData();
   }, []);
 
+  useEffect(() => {
+    setFilterData(data.filter((planet) => (
+      planet.name.toLowerCase().includes(searchInput)
+    )));
+  }, [searchInput]);
+
   return (
     <div>
+      <Search />
       <table>
         <thead>
           <tr>
@@ -29,7 +43,7 @@ function Table() {
           </tr>
         </thead>
         <tbody>
-          {data.map((planet) => (
+          {filterData.map((planet) => (
             <tr key={ planet.name }>
               <td>{planet.name}</td>
               <td>{planet.rotation_period}</td>
@@ -40,7 +54,7 @@ function Table() {
               <td>{planet.terrain}</td>
               <td>{planet.surface_water}</td>
               <td>{planet.population}</td>
-              <td>{planet.films.length}</td>
+              <td>{planet.films}</td>
               <td>{planet.created}</td>
               <td>{planet.edited}</td>
               <td>{planet.url}</td>
