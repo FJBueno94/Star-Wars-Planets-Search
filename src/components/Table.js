@@ -9,6 +9,7 @@ function Table() {
     getData,
     searchInput,
     data,
+    numericFilter,
   } = useContext(ProjectContext);
 
   useEffect(() => {
@@ -16,14 +17,35 @@ function Table() {
   }, []);
 
   useEffect(() => {
-    setFilterData(data.filter((planet) => (
+    const filterName = data.filter((planet) => (
       planet.name.toLowerCase().includes(searchInput)
-    )));
-  }, [searchInput]);
+    ));
+
+    const filterResult = numericFilter.reduce((acc, filter) => acc.filter((e) => {
+      switch (filter.operator) {
+      case 'maior que':
+        return e[filter.columnFilter] > Number(filter.filterValue);
+      case 'menor que':
+        return e[filter.columnFilter] < Number(filter.filterValue);
+      case 'igual a':
+        return e[filter.columnFilter] === filter.filterValue; // teste não passa com a conversão Number() //
+      default:
+        return '';
+      }
+    }), filterName);
+
+    setFilterData(filterResult);
+  }, [searchInput, numericFilter]);
 
   return (
     <div>
       <Search />
+      <p>
+        { numericFilter.map((e, i) => (
+          <p key={ i }>
+            {`${e.columnFilter} ${e.operator} ${e.filterValue}`}
+          </p>))}
+      </p>
       <table>
         <thead>
           <tr>

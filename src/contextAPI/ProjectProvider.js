@@ -6,6 +6,12 @@ function ProjectProvider({ children }) {
   const [data, setData] = useState([]);
   const [filterData, setFilterData] = useState([]);
   const [searchInput, setSearchInput] = useState('');
+  const [filters, setFilters] = useState({
+    columnFilter: 'population',
+    operator: 'maior que',
+    filterValue: 0,
+  });
+  const [numericFilter, setNumericFilter] = useState([]);
 
   async function getData() {
     const getPromise = await fetch('https://swapi-trybe.herokuapp.com/api/planets/');
@@ -14,6 +20,18 @@ function ProjectProvider({ children }) {
     setFilterData(response.results);
     return data;
   }
+
+  const handleInputChange = ({ target }) => {
+    setSearchInput(target.value);
+  };
+
+  const handleChange = ({ target }) => {
+    const { name, value } = target;
+    setFilters({
+      ...filters,
+      [name]: value,
+    });
+  };
 
   return (
     <projectContext.Provider
@@ -24,7 +42,11 @@ function ProjectProvider({ children }) {
         data,
         setData,
         searchInput,
-        setSearchInput,
+        handleInputChange,
+        filters,
+        handleChange,
+        setNumericFilter,
+        numericFilter,
       } }
     >
       {children}
