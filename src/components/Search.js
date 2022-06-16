@@ -6,28 +6,12 @@ function Search() {
     searchInput,
     handleInputChange,
     filters,
-    setFilters,
     handleChange,
-    setNumericFilter,
-    numericFilter,
     columns,
-    setColumns,
+    handleNumericFilter,
   } = useContext(ProjectContext);
 
   const { columnFilter, operator, filterValue } = filters;
-
-  const handleNumericFilter = (e) => {
-    e.preventDefault();
-    const newFilter = { columnFilter, operator, filterValue };
-    setNumericFilter([...numericFilter, newFilter]);
-    const filteredColumns = (columns.filter((el) => el !== columnFilter));
-    setColumns(filteredColumns);
-    setFilters({
-      columnFilter: filteredColumns[0],
-      operator: 'maior que',
-      filterValue: 0,
-    });
-  };
 
   return (
     <div>

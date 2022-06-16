@@ -38,8 +38,28 @@ function ProjectProvider({ children }) {
     });
   };
 
-  const deleteFilter = (index) => {
-    numericFilter.filter((_e, i) => i !== index);
+  const deleteFilter = (elemento) => {
+    setNumericFilter(numericFilter.filter((e) => e !== elemento));
+    setColumns([...columns, elemento.columnFilter]);
+  };
+
+  const removeFilters = () => {
+    setNumericFilter([]);
+    setColumns(array);
+  };
+
+  const handleNumericFilter = (e) => {
+    e.preventDefault();
+    const { columnFilter, operator, filterValue } = filters;
+    const newFilter = { columnFilter, operator, filterValue };
+    setNumericFilter([...numericFilter, newFilter]);
+    const filteredColumns = (columns.filter((el) => el !== columnFilter));
+    setColumns(filteredColumns);
+    setFilters({
+      columnFilter: filteredColumns[0],
+      operator: 'maior que',
+      filterValue: 0,
+    });
   };
 
   return (
@@ -53,13 +73,14 @@ function ProjectProvider({ children }) {
         searchInput,
         handleInputChange,
         filters,
-        setFilters,
         handleChange,
         setNumericFilter,
         numericFilter,
         deleteFilter,
         columns,
         setColumns,
+        handleNumericFilter,
+        removeFilters,
       } }
     >
       {children}

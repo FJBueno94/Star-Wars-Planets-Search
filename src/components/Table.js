@@ -11,6 +11,7 @@ function Table() {
     data,
     numericFilter,
     deleteFilter,
+    removeFilters,
   } = useContext(ProjectContext);
 
   useEffect(() => {
@@ -48,12 +49,19 @@ function Table() {
             {' '}
             <button
               type="button"
-              onClick={ () => deleteFilter(i) }
+              onClick={ () => deleteFilter(e) }
             >
               x
             </button>
           </p>
         ))}
+        <button
+          type="button"
+          onClick={ removeFilters }
+          data-testid="button-remove-filters"
+        >
+          Remover filtros
+        </button>
       </p>
       <table>
         <thead>
