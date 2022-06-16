@@ -10,6 +10,7 @@ function Table() {
     searchInput,
     data,
     numericFilter,
+    deleteFilter,
   } = useContext(ProjectContext);
 
   useEffect(() => {
@@ -24,9 +25,9 @@ function Table() {
     const filterResult = numericFilter.reduce((acc, filter) => acc.filter((e) => {
       switch (filter.operator) {
       case 'maior que':
-        return e[filter.columnFilter] > Number(filter.filterValue);
+        return e[filter.columnFilter] > Number(filter.filterValue); // teste não passa sem a conversão Number() //
       case 'menor que':
-        return e[filter.columnFilter] < Number(filter.filterValue);
+        return e[filter.columnFilter] < Number(filter.filterValue); // teste não passa sem a conversão Number() //
       case 'igual a':
         return e[filter.columnFilter] === filter.filterValue; // teste não passa com a conversão Number() //
       default:
@@ -42,9 +43,17 @@ function Table() {
       <Search />
       <p>
         { numericFilter.map((e, i) => (
-          <p key={ i }>
+          <p key={ i } data-testid="filter">
             {`${e.columnFilter} ${e.operator} ${e.filterValue}`}
-          </p>))}
+            {' '}
+            <button
+              type="button"
+              onClick={ () => deleteFilter(i) }
+            >
+              x
+            </button>
+          </p>
+        ))}
       </p>
       <table>
         <thead>

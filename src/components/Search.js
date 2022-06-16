@@ -6,9 +6,12 @@ function Search() {
     searchInput,
     handleInputChange,
     filters,
+    setFilters,
     handleChange,
     setNumericFilter,
     numericFilter,
+    columns,
+    setColumns,
   } = useContext(ProjectContext);
 
   const { columnFilter, operator, filterValue } = filters;
@@ -17,6 +20,13 @@ function Search() {
     e.preventDefault();
     const newFilter = { columnFilter, operator, filterValue };
     setNumericFilter([...numericFilter, newFilter]);
+    const filteredColumns = (columns.filter((el) => el !== columnFilter));
+    setColumns(filteredColumns);
+    setFilters({
+      columnFilter: filteredColumns[0],
+      operator: 'maior que',
+      filterValue: 0,
+    });
   };
 
   return (
@@ -44,11 +54,11 @@ function Search() {
             id="columnFilter"
             data-testid="column-filter"
           >
-            <option>population</option>
-            <option>orbital_period</option>
-            <option>diameter</option>
-            <option>rotation_period</option>
-            <option>surface_water</option>
+            {
+              columns.map((e, i) => (
+                <option key={ i } value={ e }>{ e }</option>
+              ))
+            }
           </select>
         </label>
         <label htmlFor="Operator">
