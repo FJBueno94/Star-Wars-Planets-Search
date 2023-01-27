@@ -55,13 +55,17 @@ function Table() {
             </button>
           </p>
         ))}
-        <button
-          type="button"
-          onClick={ removeFilters }
-          data-testid="button-remove-filters"
-        >
-          Remover filtros
-        </button>
+        {
+          numericFilter.length > 0 && (
+            <button
+              type="button"
+              onClick={ removeFilters }
+              data-testid="button-remove-filters"
+            >
+              Remover filtros
+            </button>
+          )
+        }
       </p>
       <table>
         <thead>
